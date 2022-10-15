@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block content %}
+<h1>{{ session.role.capitalize() }} Admin Page</h1>
+<h2>Welcome, {{ session.username }}</h2>
+<br />
+<h3>New AR Form</h3>
+<form action="/add_invoice" method="post" autocomplete="off">
+  <div class="form-input">
+    <label for="cust_id">Customer ID :</label>
+    <br />
+    <input type="number" name="cust_id" id="cust_id" required />
+  </div>
+  <div class="form-input">
+    <label for="date">Date :</label>
+    <br />
+    <input type="date" name="date" id="date" required />
+  </div>
+  <div class="form-input">
+    <label for="amount">AR Amount :</label>
+    <br />
+    <input type="number" name="amount" id="amount" required />
+  </div>
+  <div class="form-input">
+    <label for="remark">Remarks :</label>
+    <br />
+    <textarea name="remark" id="remark" cols="30" rows="10"></textarea>
+  </div>
+  <br />
+  <input type="submit" value="Add Account Receivable" class="btn" />
+</form>
+{% endblock %}
