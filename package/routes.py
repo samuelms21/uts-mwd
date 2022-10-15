@@ -83,3 +83,14 @@ def add_invoice():
         # cust_id does not exist in db
         return redirect(url_for('sales', message='Customer does not exist.'))
         
+@app.route('/finance')
+def finance():
+    title = 'Finance'
+    if not (session.get('username') and session.get("role") == 'finance'):
+        return redirect(url_for('login'))
+    return render_template('finance.html', title=title, message=None)
+
+
+@app.route('/approve_payment',methods=['POST'])
+def approve_payment():
+    pass
