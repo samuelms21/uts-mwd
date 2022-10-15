@@ -1,1 +1,27 @@
-{% extends "base.html" %} {% block content %} {% endblock %}
+{% extends "base.html" %} {% block content %}
+
+<form action="/approve_payment" method="post">
+  <input type="submit" value="Approve" />
+  <ul>
+    {% for inv in invoices %}
+    <li class="flex-container inv-list">
+      <div class="card">
+        <p>Invoice ID: {{ inv.inv_id }}</p>
+        <p>Cust ID: {{ inv.cust_id }}</p>
+        <p>Date: {{ inv.date }}</p>
+        <p>Amount: {{ inv.amount }}</p>
+        <p>
+          Remarks: <br />
+          {{inv.remark}}
+        </p>
+        <br />
+        <p>Status: {{inv.status}}</p>
+      </div>
+      <input type="checkbox" name="{{ inv.inv_id }}" id="{{ inv.inv_id }}" />
+      <br />
+    </li>
+    {% endfor %}
+  </ul>
+</form>
+
+{% endblock %}

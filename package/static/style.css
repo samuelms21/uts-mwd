@@ -1,3 +1,6 @@
+:root {
+  font-size: 16px;
+}
 * {
   padding: 0;
   margin: 0;
@@ -52,4 +55,14 @@ input[type="date"] {
   border: 1px solid black;
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
+}
+.card {
+  border: 1px solid black;
+  margin: 0.5rem 0;
+}
+.flex-container {
+  display: flex;
+}
+.inv-list {
+  justify-content: space-between;
 }

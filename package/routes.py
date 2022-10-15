@@ -1,6 +1,7 @@
 from package import app, db
 from flask import render_template, redirect, request, url_for, session
 from package.models import User, Invoice, Customer
+from sqlalchemy import update
 
 @app.route('/')
 def index():
@@ -86,11 +87,42 @@ def add_invoice():
 @app.route('/finance')
 def finance():
     title = 'Finance'
+
     if not (session.get('username') and session.get("role") == 'finance'):
         return redirect(url_for('login'))
-    return render_template('finance.html', title=title, message=None)
+
+    all_invoice = Invoice.query.all()
+
+    invoices = []    
+
+    for inv in all_invoice:
+        if inv.status == False:
+            invoices.append(inv)
+
+    return render_template('finance.html', title=title, invoices=invoices)
 
 
 @app.route('/approve_payment',methods=['POST'])
 def approve_payment():
-    pass
+    title = 'Finance'
+
+    if request.method == 'POST':
+        data = request.form
+
+        inv_ids = [int(i) for i in data.keys()]
+
+        for inv_id in inv_ids:
+            invoice = db.session.query(Invoice).filter(Invoice.inv_id==inv_id).first()
+            invoice.status = True
+        
+        db.session.commit()
+
+        all_invoice = Invoice.query.all()
+
+        invoices = []    
+
+        for inv in all_invoice:
+            if inv.status == False:
+                invoices.append(inv)
+
+        return render_template('finance.html', title=title, invoices=invoices)
