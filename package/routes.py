@@ -94,5 +94,5 @@ def finance():
 
 @app.route('/approve_payment',methods=['POST'])
 def approve_payment():
-    
+    pass
     
