@@ -1,7 +1,12 @@
 {% extends "base.html" %} {% block content %}
 <div class="finance-container">
   <form action="/approve_payment" method="post">
-    <input type="submit" value="Approve" />
+    <div class="header-finance-container">
+      <div class="header-finance-item">
+        <div class="header-finance-text">Approve Finance</div>
+        <input type="submit" value="Approve" id="submitFinanceButton"/>
+      </div>
+    </div>
     <ul>
       {% for inv in invoices %}
       <li>
@@ -40,6 +45,7 @@
       {% endfor %}
     </ul>
   </form>
-</div>
+  </div>
 
-{% endblock %}
+  {% endblock %}
+</div>
