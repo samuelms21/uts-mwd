@@ -19,9 +19,6 @@ a {
   color: white;
 }
 
-main {
-  padding: 2rem;
-}
 
 .form-input {
   margin: 0.75rem 0;
@@ -71,6 +68,11 @@ li{
   list-style: none;
 }
 
+.finance-container{
+  background-color: #808080;
+  padding: 1rem;
+}
+
 .flex-container-finance{
   background-color: #f4f4f4;
   display: flex;
@@ -83,13 +85,11 @@ li{
 
 .flex-item-finance{
   display: flex;
-  background-color: yellowgreen;
   flex-direction: column;
   align-items: center;
 }
 
 .main-finance-text{
-  background-color: crimson;
   margin-top: 0.25rem;
   font-weight: 700;
   text-align: justified;
@@ -97,6 +97,5 @@ li{
 }
 
 .small-finance-text{
-  background-color: lightblue;
-  
+  color: #808080;
 }
