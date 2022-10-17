@@ -84,33 +84,40 @@ def add_invoice():
         # cust_id does not exist in db
         return redirect(url_for('sales', message='Customer does not exist.'))
         
+def change_date_format(date:str):
+    months_in_year = ['','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    date = date.split('-')
+    date = date[::-1]
+    bulan = months_in_year[int(date[1])]
+    newDate = ""
+    newDate+=date[0]
+    newDate+='-'
+    newDate+=bulan
+    newDate+='-'
+    newDate+=date[-1]
+    return newDate
+
 @app.route('/finance')
 def finance():
     title = 'Finance'
 
     if not (session.get('username') and session.get("role") == 'finance'):
         return redirect(url_for('login'))
+    all_invoice = Invoice.query.all()
 
-    return render_template('finance.html', title=title)
+    invoices = []    
+
+    for inv in all_invoice:
+        if inv.status == False:
+            invoices.append(inv)
+        inv.date = str(inv.date)
+        inv.date = inv.date[:inv.date.index(' ')]
+        inv.date = change_date_format(inv.date)
+    return render_template('finance.html', title=title,invoices=invoices)
 
 
 @app.route('/approve_payment',methods=['POST'])
 def approve_payment():
-    def change_date_format(date:str):
-        months_in_year = ['','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        date = date.split('-')
-        date = date[::-1]
-        bulan = months_in_year[int(date[1])]
-        newDate = ""
-        newDate+=date[0]
-        newDate+='-'
-        newDate+=bulan
-        newDate+='-'
-        newDate+=date[-1]
-        return newDate
-        
-    title = 'Finance'
-
     if request.method == 'POST':
         data = request.form
 
@@ -122,14 +129,5 @@ def approve_payment():
         
         db.session.commit()
 
-        all_invoice = Invoice.query.all()
-
-        invoices = []    
-
-        for inv in all_invoice:
-            if inv.status == False:
-                invoices.append(inv)
-            inv.date = str(inv.date)
-            inv.date = inv.date[:inv.date.index(' ')]
-            inv.date = change_date_format(inv.date)
-        return render_template('finance.html', title=title, invoices=invoices)
+       
+        return redirect(url_for('finance'))
