@@ -1,0 +1,56 @@
+{% extends "base.html" %} {% block content %}
+<h1>{{ session.role.capitalize() }} Admin Page</h1>
+<h2>Welcome, {{ session.username }}</h2>
+<br />
+<a href="{{ url_for('manager_cust') }}">Customer CRUD</a>
+
+<!-- total piutang: blablabla -->
+
+<div class="finance-container">
+  <form action="/void_payment" method="post">
+    <input type="submit" value="Void Payment" />
+    <ul>
+      {% for inv in invoices %}
+      <li>
+        <div class="flex-container-finance">
+          <div class="flex-item-finance">
+            <p class="small-finance-text">Invoice ID:</p>
+            <p class="main-finance-text">{{ inv.inv_id }}</p>
+          </div>
+          <div class="flex-item-finance">
+            <p class="small-finance-text">Cust ID:</p>
+            <p class="main-finance-text">{{ inv.cust_id }}</p>
+          </div>
+          <div class="flex-item-finance">
+            <p class="small-finance-text">Date:</p>
+            <p class="main-finance-text">{{ inv.date }}</p>
+          </div>
+          <div class="flex-item-finance">
+            <p class="small-finance-text">Amount:</p>
+            <p class="main-finance-text">{{ inv.amount }}</p>
+          </div>
+          <div class="flex-item-finance">
+            <p class="small-finance-text">Remarks:</p>
+            {% if inv.remark|length == 0 %}
+            <p class="main-finance-text">{{"-"}}</p>
+            {% else %}
+            <p class="main-finance-text">{{inv.remark}}</p>
+            {% endif %}
+          </div>
+          <div class="flex-item-finance">
+            <p class="small-finance-text">Status:</p>
+            <p class="main-finance-text">{{inv.status}}</p>
+          </div>
+          <input
+            type="checkbox"
+            name="{{ inv.inv_id }}"
+            id="{{ inv.inv_id }}"
+            id="checkmark"
+          />
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </form>
+</div>
+{% endblock %}

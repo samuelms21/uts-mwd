@@ -57,12 +57,10 @@ def login():
 
     return render_template('login.html', title=title)
 
-
 @app.route('/logout')
 def logout():
     session["username"] = None
     return redirect(url_for('login'))
-
 
 @app.route('/add_invoice', methods=['GET', 'POST'])
 def add_invoice():
@@ -120,7 +118,6 @@ def finance():
         inv.date = change_date_format(inv.date)
     return render_template('finance.html', title=title,invoices=invoices)
 
-
 @app.route('/approve_payment',methods=['POST'])
 def approve_payment():
     if request.method == 'POST':
@@ -136,3 +133,61 @@ def approve_payment():
 
        
         return redirect(url_for('finance'))
+
+
+# tambahan
+from sqlalchemy.sql import func
+
+@app.route('/void_payment',methods=['POST'])
+def void_payment():
+    if request.method == 'POST':
+        data = request.form
+
+        inv_ids = [int(i) for i in data.keys()]
+
+        for inv_id in inv_ids:
+            invoice = db.session.query(Invoice).filter(Invoice.inv_id==inv_id).first()
+            invoice.status = False
+        
+        db.session.commit()
+
+       
+        return redirect(url_for('manager'))
+
+
+@app.route('/manager')
+def manager():
+    
+    title = 'Manager'
+
+    if not (session.get('username') and session.get("role") == 'manager'):
+        return redirect(url_for('login'))
+    all_invoice = Invoice.query.all()
+
+    invoices = []    
+
+    for inv in all_invoice:
+        if inv.status == True:
+            invoices.append(inv)
+        inv.date = str(inv.date)
+        inv.date = inv.date[:inv.date.index(' ')]
+        inv.date = change_date_format(inv.date)
+
+    return render_template('manager.html', title=title, invoices=invoices)
+
+@app.route('/manager_cust')
+def manager_cust():
+    title = 'Manager Cust'
+
+    if not (session.get('username') and session.get("role") == 'manager'):
+        return redirect(url_for('login'))
+    all_invoice = Invoice.query.all()
+    all_cust = Customer.query.all()
+
+    print(all_invoice)
+
+    qry = db.session.query(func.sum(Invoice.amount).label('total').group_by(Invoice.cust_id))
+
+    print(qry)
+    return render_template('manager_cust.html', title=title, invoices=qry)
+# tambahan

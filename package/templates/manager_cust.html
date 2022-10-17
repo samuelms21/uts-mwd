@@ -1,0 +1,8 @@
+{% extends "base.html" %} {% block content %}
+<h1>{{ session.role.capitalize() }} Admin Page</h1>
+<h2>Welcome, {{ session.username }}</h2>
+<br />
+
+<h1>query = {{invoices}}</h1>
+
+{% endblock %}
