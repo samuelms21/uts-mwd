@@ -1,7 +1,7 @@
 from package import app, db
 from flask import render_template, redirect, request, url_for, session
 from package.models import User, Invoice, Customer
-from sqlalchemy import update
+from flask import flash
 
 @app.route('/')
 def index():
@@ -35,6 +35,7 @@ def login():
 
         # If username or password is empty
         if not (username and password):
+            flash('Username or Password is Empty!')
             return render_template('login.html')
         
         # If username and password is not empty (proceed)
@@ -49,6 +50,9 @@ def login():
                 session['role'] = user_is_found.role
 
                 return redirect(url_for(session['role']))
+        else:
+            flash('Wrong Username or Password!')
+            return render_template('login.html', title=title)
 
     return render_template('login.html', title=title)
 

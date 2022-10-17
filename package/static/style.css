@@ -1,15 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+
 :root {
   font-size: 16px;
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+  width: 10px;
+}
+
+::-webkit-scrollbar-corner {
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(200, 200, 200, 0.6);
+  border-radius: 5px;
 }
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
-header,
-footer {
+header {
   background-color: black;
   color: white;
   padding: 1rem 2rem;
@@ -92,9 +108,9 @@ li {
 
 .main-finance-text {
   margin-top: 0.25rem;
-  font-weight: 700;
+  font-weight: 600;
   text-align: justified;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .small-finance-text {
