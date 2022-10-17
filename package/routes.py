@@ -24,9 +24,6 @@ def sales():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    # if session.get("username"):
-    #     return redirect(url_for('index'))
-
     title = 'Login'
 
     if request.method == 'POST':
@@ -50,8 +47,12 @@ def login():
                 session['role'] = user_is_found.role
 
                 return redirect(url_for(session['role']))
+            else:
+                flash('Wrong Password!')
+                return render_template('login.html', title=title)
+                
         else:
-            flash('Wrong Username or Password!')
+            flash('Wrong Username!')
             return render_template('login.html', title=title)
 
     return render_template('login.html', title=title)
