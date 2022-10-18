@@ -39,7 +39,7 @@ class User(db.Model):
     username = db.Column(db.String(100))
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(20))
-    
+
     def __init__ (self,username,password,role):
         self.username = username
         self.password_hash = self.set_password(password)
