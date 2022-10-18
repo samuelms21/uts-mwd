@@ -15,4 +15,38 @@
   {% endfor %}
 </ul>
 
+<form action="/add_customer" method="POST" autocomplete="off">
+  <div class="form-input">
+    <label for="username">Name:</label>
+    <br />
+    <input type="text" name="cust_name" id="cust_name" placeholder="Enter Customer Name" required />
+  </div>
+  <div class="form-input">
+    <label for="address">Address:</label>
+    <br />
+    <input
+      type="text"
+      name="cust_add"
+      id="cust_add"
+      placeholder="Enter Customer Address"
+      required
+    />
+  </div>
+  <div class="form-input">
+    <label for="address">Phone:</label>
+    <br />
+    <input
+      type="text"
+      name="phone_add"
+      id="phone_add"
+      placeholder="Enter Customer Phone Number"
+      required
+    />
+    <br /><br />
+    <p>0-9 Only, Phone number must be 12 digits long!</p>
+  </div>
+  <br />
+  <input type="submit" value="Add Cust" class="btn" />
+</form>
+
 {% endblock %}
