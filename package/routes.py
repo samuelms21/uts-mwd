@@ -2,6 +2,7 @@ from package import app, db
 from flask import render_template, redirect, request, url_for, session
 from package.models import User, Invoice, Customer
 from flask import flash
+import string
 
 @app.route('/')
 def index():
@@ -206,3 +207,21 @@ def manager_cust():
                 pass
             
     return render_template('manager_cust.html', title=title, all_cust_o=all_cust_o)
+
+def isValidPhoneNumber(phone_number:str):
+    return True if phone_number not in string.ascii_letters and len(phone_number) == 12 else False
+            
+@app.route('/add_customer', methods=['GET', 'POST'])
+def add_customer():
+    if request.method == 'POST':
+        cust_name = request.form.get('cust_name')
+        cust_address = request.form.get('cust_add')
+        cust_phone = request.form.get('phone_add')
+        if isValidPhoneNumber(cust_phone):
+            cust = Customer(cust_name,cust_address,cust_phone)
+            db.session.add(cust)
+            db.session.commit()
+        else:
+            print('Phone Number Tidak Valid!')
+        
+    return render_template('manager_cust.html')
