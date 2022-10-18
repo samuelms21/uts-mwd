@@ -175,19 +175,13 @@ def manager():
 
     return render_template('manager.html', title=title, invoices=invoices, total_ar=total_ar)
 
+
 @app.route('/manager_cust')
 def manager_cust():
     title = 'Manager Cust'
 
     if not (session.get('username') and session.get("role") == 'manager'):
         return redirect(url_for('login'))
-    all_invoice = Invoice.query.all()
+    
     all_cust = Customer.query.all()
-
-    print(all_invoice)
-
-    # qry = db.session.query(func.sum(Invoice.amount).label('total').group_by(Invoice.cust_id))
-
-    # print(qry)
     return render_template('manager_cust.html', title=title)
-# tambahan
