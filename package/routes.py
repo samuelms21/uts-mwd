@@ -60,6 +60,7 @@ def login():
 @app.route('/logout')
 def logout():
     session["username"] = None
+    session["role"] = None
     return redirect(url_for('login'))
 
 @app.route('/add_invoice', methods=['GET', 'POST'])
@@ -70,11 +71,11 @@ def add_invoice():
         amount = request.form.get('amount')
         remark = request.form.get('remark')
         
-        print('Customer ID:', cust_id)
-        print('Date:', date)
-        print('Date data type:', type(date))
-        print('Amount:', amount)
-        print('Remark:', remark)
+        # print('Customer ID:', cust_id)
+        # print('Date:', date)
+        # print('Date data type:', type(date))
+        # print('Amount:', amount)
+        # print('Remark:', remark)
 
         # Check if cust_id exists
         if Customer.query.filter_by(cust_id=cust_id).first():
@@ -135,9 +136,6 @@ def approve_payment():
         return redirect(url_for('finance'))
 
 
-# tambahan
-from sqlalchemy.sql import func
-
 @app.route('/void_payment',methods=['POST'])
 def void_payment():
     if request.method == 'POST':
@@ -150,14 +148,11 @@ def void_payment():
             invoice.status = False
         
         db.session.commit()
-
-       
         return redirect(url_for('manager'))
 
 
 @app.route('/manager')
 def manager():
-    
     title = 'Manager'
 
     if not (session.get('username') and session.get("role") == 'manager'):
@@ -166,14 +161,19 @@ def manager():
 
     invoices = []    
 
+    total_ar = 0
+
     for inv in all_invoice:
         if inv.status == True:
             invoices.append(inv)
+        else:
+            total_ar += inv.amount
+
         inv.date = str(inv.date)
         inv.date = inv.date[:inv.date.index(' ')]
         inv.date = change_date_format(inv.date)
 
-    return render_template('manager.html', title=title, invoices=invoices)
+    return render_template('manager.html', title=title, invoices=invoices, total_ar=total_ar)
 
 @app.route('/manager_cust')
 def manager_cust():
@@ -186,8 +186,8 @@ def manager_cust():
 
     print(all_invoice)
 
-    qry = db.session.query(func.sum(Invoice.amount).label('total').group_by(Invoice.cust_id))
+    # qry = db.session.query(func.sum(Invoice.amount).label('total').group_by(Invoice.cust_id))
 
-    print(qry)
-    return render_template('manager_cust.html', title=title, invoices=qry)
+    # print(qry)
+    return render_template('manager_cust.html', title=title)
 # tambahan

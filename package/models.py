@@ -1,7 +1,6 @@
 from package import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 class Customer(db.Model):
     __tablename__ = 'customer'
     cust_id = db.Column('cust_id',db.Integer, primary_key=True)

@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
     <title>{{ title }} - AR Tracking App</title>
   </head>
   <body>
@@ -13,6 +16,9 @@
       <a href="{{ url_for('login') }}">Login</a>
       {% else %}
       <a href="{{ url_for('logout') }}">Logout</a>
+      {% endif %} {% if session.role == 'manager' %}
+      <a href="{{ url_for('manager') }}">Manage Invoices</a>
+      <a href="{{ url_for('manager_cust') }}">Manage Customer Data</a>
       {% endif %}
     </header>
     <main>
