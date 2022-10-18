@@ -205,5 +205,9 @@ def manager_cust():
                     cust.amount += inv.amount
                 pass
             
+<<<<<<< HEAD
     return render_template('manager_cust.html', title=title)
 
+=======
+    return render_template('manager_cust.html', title=title, all_cust_o=all_cust_o)
+>>>>>>> 827d53b4eea6b36ad77e939da5f49d0a0af1fc92
