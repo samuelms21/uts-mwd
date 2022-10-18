@@ -206,4 +206,4 @@ def manager_cust():
                 pass
             
     return render_template('manager_cust.html', title=title)
-# tambahan
+
