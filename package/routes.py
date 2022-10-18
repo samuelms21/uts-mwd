@@ -208,4 +208,30 @@ def manager_cust():
             
     return render_template('manager_cust.html', title=title, all_cust_o=all_cust_o)
 
+@app.route("/update_cust", methods=["POST"])
+def update_cust():
+    cust_id = request.form.get("cust_id")
 
+    newname = request.form.get("newname")
+
+    newaddress = request.form.get("newaddress")
+
+    newphone = request.form.get("newphone")
+
+    customer = Customer.query.filter_by(cust_id=cust_id).first()
+    customer.name = newname
+    customer.address = newaddress
+    customer.phone = newphone
+    db.session.commit()
+
+
+    return redirect(url_for('manager_cust'))
+
+
+@app.route("/delete_cust", methods=["POST"])
+def delete_cust():
+    cust_id = request.form.get("cust_id")
+    customer = Customer.query.filter_by(cust_id=cust_id).first()
+    db.session.delete(customer)
+    db.session.commit()
+    return redirect(url_for('manager_cust'))
