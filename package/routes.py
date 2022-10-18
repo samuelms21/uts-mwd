@@ -69,11 +69,11 @@ def add_invoice():
         amount = request.form.get('amount')
         remark = request.form.get('remark')
         
-        print('Customer ID:', cust_id)
-        print('Date:', date)
-        print('Date data type:', type(date))
-        print('Amount:', amount)
-        print('Remark:', remark)
+        # print('Customer ID:', cust_id)
+        # print('Date:', date)
+        # print('Date data type:', type(date))
+        # print('Amount:', amount)
+        # print('Remark:', remark)
 
         # Check if cust_id exists
         if Customer.query.filter_by(cust_id=cust_id).first():
