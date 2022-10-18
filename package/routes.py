@@ -184,4 +184,10 @@ def manager_cust():
         return redirect(url_for('login'))
     
     all_cust = Customer.query.all()
+
+    print(all_invoice)
+
+    # qry = db.session.query(func.sum(Invoice.amount).label('total').group_by(Invoice.cust_id))
+
+    # print(qry)
     return render_template('manager_cust.html', title=title)
