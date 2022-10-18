@@ -5,13 +5,30 @@
 
 <ul>
   {% for cust in all_cust_o %}
-  <li>
-    <p>{{ cust.id }}</p>
-    <p>{{ cust.name }}</p>
-    <p>{{ cust.address }}</p>
-    <p>{{ cust.phone }}</p>
-    <p>{{ cust.amount }}</p>
-  </li>
+  <form action="/update_cust" method="post">
+    <li>
+      <p>{{ cust.cust_id }}</p>
+      <input type="hidden" value="{{cust.cust_id}}" name="cust_id" />
+
+      <p>{{ cust.name }}</p>
+      <input type="text" value="{{cust.name}}" name="newname" />
+
+      <p>{{ cust.address }}</p>
+      <input type="text" value="{{cust.address}}" name="newaddress" />
+
+      <p>{{ cust.phone }}</p>
+      <input type="text" value="{{cust.phone}}" name="newphone" />
+
+      <p>{{ cust.amount }}</p>
+      <input type="submit" value="Edit" />
+    </li>
+  </form>
+
+  <form action="/delete_cust" method="post">
+    <input type="hidden" value="{{cust.cust_id}}" name="cust_id" />
+    <input type="submit" value="Delete" />
+  </form>
+  <br />
   {% endfor %}
 </ul>
 

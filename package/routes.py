@@ -186,8 +186,8 @@ def manager_cust():
     all_cust = Customer.query.all()
 
     class Cust():
-        def __init__ (self,id,name,address,phone,amount=0):
-            self.id = id
+        def __init__ (self,cust_id,name,address,phone,amount=0):
+            self.cust_id = cust_id
             self.name = name
             self.address = address
             self.phone = phone
@@ -201,27 +201,11 @@ def manager_cust():
 
     for inv in all_invoice:
         for cust in all_cust_o:
-            if inv.cust_id == cust.id:
+            if inv.cust_id == cust.cust_id:
                 if inv.status == False:
                     cust.amount += inv.amount
                 pass
             
     return render_template('manager_cust.html', title=title, all_cust_o=all_cust_o)
 
-def isValidPhoneNumber(phone_number:str):
-    return True if phone_number not in string.ascii_letters and len(phone_number) == 12 else False
-            
-@app.route('/add_customer', methods=['GET', 'POST'])
-def add_customer():
-    if request.method == 'POST':
-        cust_name = request.form.get('cust_name')
-        cust_address = request.form.get('cust_add')
-        cust_phone = request.form.get('phone_add')
-        if isValidPhoneNumber(cust_phone):
-            cust = Customer(cust_name,cust_address,cust_phone)
-            db.session.add(cust)
-            db.session.commit()
-        else:
-            print('Phone Number Tidak Valid!')
-        
-    return render_template('manager_cust.html')
+
