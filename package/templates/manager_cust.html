@@ -3,6 +3,16 @@
 <h2>Welcome, {{ session.username }}</h2>
 <br />
 
-<h1>query = {{invoices}}</h1>
+<ul>
+  {% for cust in all_cust_o %}
+  <li>
+    <p>{{ cust.id }}</p>
+    <p>{{ cust.name }}</p>
+    <p>{{ cust.address }}</p>
+    <p>{{ cust.phone }}</p>
+    <p>{{ cust.amount }}</p>
+  </li>
+  {% endfor %}
+</ul>
 
 {% endblock %}

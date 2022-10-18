@@ -184,10 +184,26 @@ def manager_cust():
     all_invoice = Invoice.query.all()
     all_cust = Customer.query.all()
 
-    print(all_invoice)
+    class Cust():
+        def init (self,id,name,address,phone,amount=0):
+            self.id = id
+            self.name = name
+            self.address = address
+            self.phone = phone
+            self.amount = amount
 
-    # qry = db.session.query(func.sum(Invoice.amount).label('total').group_by(Invoice.cust_id))
+    all_cust_o = []
 
-    # print(qry)
+    for cust in all_cust:
+        each_cust = Cust(cust.cust_id,cust.name,cust.address,cust.phone)
+        all_cust_o.append(each_cust)
+
+    for inv in all_invoice:
+        for cust in all_cust_o:
+            if inv.cust_id == cust.id:
+                if inv.status == False:
+                    cust.amount += inv.amount
+                pass
+            
     return render_template('manager_cust.html', title=title)
 # tambahan
