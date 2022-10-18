@@ -1,14 +1,14 @@
 {% extends "base.html" %} {% block content %}
-<h1>{{ session.role.capitalize() }} Admin Page</h1>
-<h2>Welcome, {{ session.username }}</h2>
-<br />
-<a href="{{ url_for('manager_cust') }}">Customer CRUD</a>
-
-<!-- total piutang: blablabla -->
-
 <div class="finance-container">
+  <h1>{{ session.role.capitalize() }} Admin Page</h1>
+  <h2>Welcome, {{ session.username }}</h2>
+  <br />
+  <div id="total-ar">
+    <h3>Total Account Receivables:</h3>
+    <h4>Rp {{ total_ar }}</h4>
+  </div>
   <form action="/void_payment" method="post">
-    <input type="submit" value="Void Payment" />
+    <input type="submit" value="Void Payment" class="btn" />
     <ul>
       {% for inv in invoices %}
       <li>

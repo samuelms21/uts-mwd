@@ -32,9 +32,11 @@ header {
 }
 
 a {
-  color: white;
-  background-color: black;
-  padding: 0.5rem 1rem;
+  color: black;
+  background-color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
 }
 
 .form-input {
@@ -119,7 +121,7 @@ li {
 
 .header-finance-container {
   width: 100%;
-  background-color: #B2BEB5;
+  background-color: #b2beb5;
   margin-bottom: 2rem;
   border-radius: 0.5rem;
 }
@@ -139,7 +141,7 @@ li {
 }
 
 #submitFinanceButton {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   font-size: 0.8rem;
   border: none;
   color: white;
@@ -153,7 +155,7 @@ li {
 
 #submitFinanceButton:hover,
 #submitFinanceButton:active {
-  background-color: #18652F;
+  background-color: #18652f;
   cursor: pointer;
   transition-duration: 0.4s;
 }
@@ -177,7 +179,7 @@ li {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('./images/login_back.jpg');
+  background: url("./images/login_back.jpg");
   background-size: cover;
 }
 
@@ -205,4 +207,11 @@ li {
 
 .header-text-finance {
   text-align: center;
+}
+
+#total-ar {
+  background-color: white;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+  padding: 0.75rem;
 }
