@@ -185,7 +185,7 @@ def manager_cust():
     all_cust = Customer.query.all()
 
     class Cust():
-        def init (self,id,name,address,phone,amount=0):
+        def __init__ (self,id,name,address,phone,amount=0):
             self.id = id
             self.name = name
             self.address = address
