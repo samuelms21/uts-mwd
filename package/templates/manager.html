@@ -37,16 +37,7 @@
             <p class="main-finance-text">{{inv.remark}}</p>
             {% endif %}
           </div>
-          <div class="flex-item-finance">
-            <p class="small-finance-text">Status:</p>
-            <p class="main-finance-text">{{inv.status}}</p>
-          </div>
-          <input
-            type="checkbox"
-            name="{{ inv.inv_id }}"
-            id="{{ inv.inv_id }}"
-            id="checkmark"
-          />
+          <input type="checkbox" name="{{ inv.inv_id }}" id="{{ inv.inv_id }}" id="checkmark" />
         </div>
       </li>
       {% endfor %}
