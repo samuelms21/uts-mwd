@@ -1,7 +1,6 @@
 from package import app, db
-from flask import render_template, redirect, request, url_for, session
+from flask import render_template, redirect, request, url_for, session, flash
 from package.models import User, Invoice, Customer
-from flask import flash
 import string
 
 @app.route('/')
@@ -49,11 +48,11 @@ def login():
 
                 return redirect(url_for(session['role']))
             else:
-                flash('Wrong Password!')
+                flash('Wrong password', 'error')
                 return render_template('login.html', title=title)
                 
         else:
-            flash('Wrong Username!')
+            flash('Username not found', 'error')
             return render_template('login.html', title=title)
 
     return render_template('login.html', title=title)
@@ -71,12 +70,6 @@ def add_invoice():
         date = request.form.get('date')
         amount = request.form.get('amount')
         remark = request.form.get('remark')
-        
-        # print('Customer ID:', cust_id)
-        # print('Date:', date)
-        # print('Date data type:', type(date))
-        # print('Amount:', amount)
-        # print('Remark:', remark)
 
         # Check if cust_id exists
         if Customer.query.filter_by(cust_id=cust_id).first():
@@ -84,10 +77,14 @@ def add_invoice():
             new_invoice = Invoice(cust_id, date, amount, remark, status=False)
             db.session.add(new_invoice)
             db.session.commit()
-            return redirect(url_for('sales', message='New invoice added to database.'))
-
-        # cust_id does not exist in db
-        return redirect(url_for('sales', message='Customer does not exist.'))
+            flash('Invoice succesfully added', 'success')
+            return redirect(url_for('sales'))
+        else:
+            # cust_id does not exist in db
+            flash('Customer not found', 'error')
+            return redirect(url_for('sales'))
+        
+        return redirect(url_for('sales'))
         
 def change_date_format(date:str):
     months_in_year = ['','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']

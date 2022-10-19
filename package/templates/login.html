@@ -1,36 +1,44 @@
 {% extends "base.html" %} {% block content %}
-<div class="flex-container" id="login-page-container">
-  <div class="login-item">
-    <h1>Hi, this is login.html</h1>
+<div class="flex-container form-div-container">
+  <div class="form-container">
+    <h1 class="fw-700">Log In</h1>
+    <br />
+    <p class="fw-500 text-grey-800">Access your AR Tracking App</p>
     <form action="/login" method="POST" autocomplete="off">
       <div class="form-input">
-        <label for="username">Username:</label>
+        <label for="username" class="fw-500">Username</label>
         <br />
         <input
           type="text"
           name="username"
           id="username"
           placeholder="Enter your username"
+          class="fw-500 border-grey-500"
           required
         />
       </div>
       <div class="form-input">
-        <label for="password">Password:</label>
+        <label for="password" class="fw-500">Password</label>
         <br />
         <input
           type="password"
           name="password"
           id="password"
           placeholder="Enter your password"
+          class="fw-500 border-grey-500"
           required
         />
       </div>
       <br />
+      {% with messages = get_flashed_messages(with_categories=True) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }} fw-500 text-center">
+        {{ message }}
+      </div>
+      {% endfor %} {% endif %} {% endwith %}
+      <br />
       <input type="submit" value="Log In" class="btn" />
     </form>
-    {% for category, message in get_flashed_messages(with_categories=True) %}
-    <div class="alert-red">{{ message }}</div>
-    {% endfor %}
   </div>
 </div>
 {% endblock %}
