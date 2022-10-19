@@ -235,3 +235,22 @@ def delete_cust():
     db.session.delete(customer)
     db.session.commit()
     return redirect(url_for('manager_cust'))
+
+def isValidPhoneNumber(phone_number:str):
+    return True if phone_number not in string.ascii_letters and len(phone_number) == 12 else False
+
+@app.route('/add_customer', methods=['GET', 'POST'])
+def add_customer():
+    if request.method == 'POST':
+        cust_name = request.form.get('cust_name')
+        cust_address = request.form.get('cust_add')
+        cust_phone = request.form.get('phone_add')
+        if isValidPhoneNumber(cust_phone):
+            cust = Customer(cust_name,cust_address,cust_phone)
+            db.session.add(cust)
+            db.session.commit()
+        else:
+            flash("Gagal, invalid Phone Number!")
+            return redirect(url_for('manager_cust'))
+        
+    return redirect(url_for('manager_cust'))

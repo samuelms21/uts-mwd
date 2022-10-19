@@ -47,26 +47,16 @@
   <div class="form-input">
     <label for="address">Address:</label>
     <br />
-    <input
-      type="text"
-      name="cust_add"
-      id="cust_add"
-      placeholder="Enter Customer Address"
-      required
-    />
+    <input type="text" name="cust_add" id="cust_add" placeholder="Enter Customer Address" require />
   </div>
   <div class="form-input">
     <label for="address">Phone:</label>
     <br />
-    <input
-      type="text"
-      name="phone_add"
-      id="phone_add"
-      placeholder="Enter Customer Phone Number"
-      required
-    />
+    <input type="text" name="phone_add" id="phone_add" placeholder="Enter Customer Phone Number" require />
     <br /><br />
-    <p>0-9 Only, Phone number must be 12 digits long!</p>
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <p class="alert-red">{{message}}</p>
+    {% endfor %}
   </div>
   <br />
   <input type="submit" value="Add Cust" class="btn" />

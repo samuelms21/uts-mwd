@@ -216,3 +216,39 @@ li {
   margin: 0.5rem 0;
   padding: 0.75rem;
 }
+
+input[type="checkbox"]{
+  appearance: none;
+  -webkit-appearance: none;
+  height: 3rem;
+  width: 3rem;
+  background-color: #d5d5d5;
+  border-radius: 0.3125rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+input[type="checkbox"]:after{
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f00c";
+  font-size: 2.125rem;
+  color: white;
+  display: none;
+}
+
+input[type="checkbox"]:hover{
+  background-color: #a5a5a5;
+}
+
+input[type="checkbox"]:checked{
+  background-color: #5bcd3e
+}
+
+input[type="checkbox"]:checked:after {
+  display: block;
+}
+
