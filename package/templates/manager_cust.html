@@ -46,11 +46,31 @@
       <label for="cust_add">Phone:</label>
       <br />
       <input type="text" value="{{cust.phone}}" name="newphone" />
+      <br /><br />
+      {% if cust.status == True %}
+      <p class="fw-500">Status = Active</p>
+      {% else %}
+      <p class="fw-500">Status = Unactive</p>
+      {% endif %}
       <br />
-      <br />
-      <p class="fw-500 text-grey-800">Amount = {{cust.amount}}</p>
-      {% with messages = get_flashed_messages(with_categories=True) %} {% if messages %} {% for category, message in messages %} {% if category[6:]|string == cust.cust_id|string %}
+      <label>Change Status:</label>
+      {% if cust.status == True %}
+      <select name="newstatus">
+        <option value="Active">Active</option>
+        <option value="Unactive">Unactive</option>
+      </select>
+      {% else %}
+      <select name="newstatus">
+        <option value="Unactive">Unactive</option>
+        <option value="Active">Active</option>
+      </select>
+      {% endif %}
 
+      <br />
+      <br />
+      <p class="fw-500 text-grey-800">Debt Amount = {{cust.amount}}</p>
+      <br />
+      {% with messages = get_flashed_messages(with_categories=True) %} {% if messages %} {% for category, message in messages %} {% if category[6:]|string == cust.cust_id|string %}
       <div class="alert alert-{{ category[:5] }} fw-500 text-center">{{ message }}</div>
       {% endif %} {% endfor %} {% endif %} {% endwith %}
       <div class="flex-button">

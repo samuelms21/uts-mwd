@@ -125,7 +125,7 @@ nav {
 input[type="text"],
 input[type="password"],
 input[type="date"],
-input[type="number"],
+input[type="number"]
 textarea {
   margin-top: 0.25rem;
   border-radius: 0.35rem;
@@ -367,3 +367,5 @@ input[type="checkbox"]:checked:after {
 .flex-button > button {
   width: 48%;
 }
+
+
