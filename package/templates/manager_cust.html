@@ -50,18 +50,18 @@
       {% if cust.status == True %}
       <p class="fw-500">Status = Active</p>
       {% else %}
-      <p class="fw-500">Status = Unactive</p>
+      <p class="fw-500">Status = Inactive</p>
       {% endif %}
       <br />
       <label>Change Status:</label>
       {% if cust.status == True %}
       <select name="newstatus">
         <option value="Active">Active</option>
-        <option value="Unactive">Unactive</option>
+        <option value="Inactive">Inactive</option>
       </select>
       {% else %}
       <select name="newstatus">
-        <option value="Unactive">Unactive</option>
+        <option value="Inactive">Inactive</option>
         <option value="Active">Active</option>
       </select>
       {% endif %}

@@ -7,55 +7,28 @@
       <br />
     </div>
     <form action="/add_invoice" method="post" autocomplete="off">
-      {% with messages = get_flashed_messages(with_categories=True) %} {% if
-      messages %} {% for category, message in messages %}
-      <div class="alert alert-{{ category }} fw-500 text-center">
-        {{ message }}
-      </div>
+      {% with messages = get_flashed_messages(with_categories=True) %} {% if messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }} fw-500 text-center">{{ message }}</div>
       {% endfor %} {% endif %} {% endwith %}
       <div class="form-input">
         <label for="cust_id">Customer ID</label>
         <br />
-        <input
-          type="number"
-          name="cust_id"
-          id="cust_id"
-          class="fw-500 border-grey-500"
-          required
-        />
+        <input type="number" name="cust_id" id="cust_id" class="fw-500 border-grey-500" required />
       </div>
       <div class="form-input">
         <label for="date">Date</label>
         <br />
-        <input
-          type="date"
-          name="date"
-          id="date"
-          class="fw-500 border-grey-500"
-          required
-        />
+        <input type="date" name="date" id="date" class="fw-500 border-grey-500" required />
       </div>
       <div class="form-input">
         <label for="amount">AR Amount</label>
         <br />
-        <input
-          type="number"
-          name="amount"
-          id="amount"
-          class="fw-500 border-grey-500"
-          required
-        />
+        <input type="number" name="amount" id="amount" class="fw-500 border-grey-500" required />
       </div>
       <div class="form-input">
         <label for="remark">Remarks</label>
         <br />
-        <textarea
-          name="remark"
-          id="remark"
-          rows="10"
-          cols="30"
-          class="fw-500 border-grey-500"
-        ></textarea>
+        <textarea name="remark" id="remark" rows="10" cols="30" class="fw-500 border-grey-500"></textarea>
       </div>
       <br />
       <input type="submit" value="Add Account Receivable" class="btn" />
