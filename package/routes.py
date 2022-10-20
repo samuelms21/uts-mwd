@@ -134,9 +134,6 @@ def finance():
 def approve_payment():
     if request.method == 'POST':
         data = request.form
-        print(data)
-        for i in data.keys():
-            print(i,'ini i ####')
         inv_ids = [int(i) for i in data.keys()]
 
         for inv_id in inv_ids:
