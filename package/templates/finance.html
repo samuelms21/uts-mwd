@@ -5,6 +5,18 @@
         <h1>Approve Finance</h1>
         <input type="submit" value="Approve" id="submitFinanceButton"/>
     </div>
+    <form class="search-bar">
+      <div class="flex-container form-input">
+        <input type="text" name="search" id="search" placeholder="Search invoice">
+        <button type="submit" class="btn"><i class="bi bi-search"></i> Search</button>
+      </div>
+    </form>
+    {% with messages = get_flashed_messages(with_categories=True) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }} fw-500 text-center">
+        {{ message }}
+      </div>
+      {% endfor %} {% endif %} {% endwith %}
     <ul>
       {% for inv in invoices %}
       <li>
@@ -34,6 +46,5 @@
     </ul>
   </form>
   </div>
-
   {% endblock %}
 </div>

@@ -1,43 +1,59 @@
 {% extends "base.html" %} {% block content %}
-<div class="finance-container">
+<div class="finance-container bg-grey-100">
   <h1>{{ session.role.capitalize() }} Admin Page</h1>
   <h2>Welcome, {{ session.username }}</h2>
   <br />
   <div id="total-ar">
-    <h3>Total Account Receivables:</h3>
-    <h4>Rp {{ total_ar }}</h4>
+    <h4 class="fw-500 text-grey-700">Total Account Receivable:</h4>
+    <h3 class="fw-700">Rp {{ total_ar }}</h3>
   </div>
-  <form action="/void_payment" method="post">
-    <input type="submit" value="Void Payment" class="btn" />
+  <form action="/void_payment" method="post" id="voidPaymentForm">
+    {% with messages = get_flashed_messages(with_categories=True) %} {% if
+    messages %} {% for category, message in messages %}
+    <div class="alert alert-{{ category }} fw-500 text-center">
+      {{ message }}
+    </div>
+    {% endfor %} {% endif %} {% endwith %}
+    <div class="flex-container">
+      <h3 class="fw-700">Paid Invoices</h3>
+      <input type="submit" value="Void Payment" class="btn" />
+    </div>
     <ul>
       {% for inv in invoices %}
       <li>
         <div class="flex-container-finance">
-          <div class="flex-item-finance">
-            <p class="small-finance-text">Invoice ID:</p>
-            <p class="main-finance-text">{{ inv.inv_id }}</p>
+          <div class="invoice-item flex-container">
+            <div class="invoice-info">
+              <p class="text-grey-700">
+                Invoice ID:
+                <span class="text-black fw-600">{{ inv.inv_id }}</span>
+              </p>
+              <p class="text-grey-700">
+                Cust ID:
+                <span class="text-black fw-600">{{ inv.cust_id }}</span>
+              </p>
+              <p class="text-grey-700">
+                Date: <span class="text-black fw-600">{{ inv.date }}</span>
+              </p>
+              <br />
+              <p class="text-grey-700">Remarks:</p>
+              {% if inv.remark|length == 0 %}
+              <p>{{"-"}}</p>
+              {% else %}
+              <p>{{inv.remark}}</p>
+              {% endif %}
+            </div>
+            <div class="invoice-price">
+              <p class="text-grey-700">Amount:</p>
+              <h3 class="fw-700">Rp {{ inv.amount }}</h3>
+            </div>
           </div>
-          <div class="flex-item-finance">
-            <p class="small-finance-text">Cust ID:</p>
-            <p class="main-finance-text">{{ inv.cust_id }}</p>
-          </div>
-          <div class="flex-item-finance">
-            <p class="small-finance-text">Date:</p>
-            <p class="main-finance-text">{{ inv.date }}</p>
-          </div>
-          <div class="flex-item-finance">
-            <p class="small-finance-text">Amount:</p>
-            <p class="main-finance-text">{{ inv.amount }}</p>
-          </div>
-          <div class="flex-item-finance">
-            <p class="small-finance-text">Remarks:</p>
-            {% if inv.remark|length == 0 %}
-            <p class="main-finance-text">{{"-"}}</p>
-            {% else %}
-            <p class="main-finance-text">{{inv.remark}}</p>
-            {% endif %}
-          </div>
-          <input type="checkbox" name="{{ inv.inv_id }}" id="{{ inv.inv_id }}" id="checkmark" />
+          <input
+            type="checkbox"
+            name="{{ inv.inv_id }}"
+            id="{{ inv.inv_id }}"
+            id="checkmark"
+          />
         </div>
       </li>
       {% endfor %}

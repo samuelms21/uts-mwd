@@ -77,11 +77,11 @@ def add_invoice():
             new_invoice = Invoice(cust_id, date, amount, remark, status=False)
             db.session.add(new_invoice)
             db.session.commit()
-            flash('Invoice succesfully added', 'success')
+            flash('Invoice succesfully added!', 'success')
             return redirect(url_for('sales'))
         else:
             # cust_id does not exist in db
-            flash('Customer not found', 'error')
+            flash('Customer not found.', 'error')
             return redirect(url_for('sales'))
         
         return redirect(url_for('sales'))
@@ -130,23 +130,31 @@ def approve_payment():
         
         db.session.commit()
 
-       
+        flash('Invoice(s) payment approved!', 'success')
         return redirect(url_for('finance'))
 
 
 @app.route('/void_payment',methods=['POST'])
 def void_payment():
-    if request.method == 'POST':
-        data = request.form
+    if session.get('username') and session.get('role') == 'manager':
+        if request.method == 'POST':
+            data = request.form
 
-        inv_ids = [int(i) for i in data.keys()]
+            if not data:
+                flash('Select at least one invoice to void.', 'error')
+                return redirect(url_for('manager'))
 
-        for inv_id in inv_ids:
-            invoice = db.session.query(Invoice).filter(Invoice.inv_id==inv_id).first()
-            invoice.status = False
-        
-        db.session.commit()
-        return redirect(url_for('manager'))
+            inv_ids = [int(i) for i in data.keys()]
+
+            for inv_id in inv_ids:
+                invoice = db.session.query(Invoice).filter(Invoice.inv_id==inv_id).first()
+                invoice.status = False
+            
+            db.session.commit()
+            flash('Void Payment Succesful!', 'success')
+            return redirect(url_for('manager'))
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/manager')
@@ -207,6 +215,9 @@ def manager_cust():
 
 @app.route("/update_cust", methods=["POST"])
 def update_cust():
+    if not (session.get('username') and session.get("role") == 'manager'):
+        return redirect(url_for('login'))
+
     cust_id = request.form.get("cust_id")
 
     newname = request.form.get("newname")
@@ -227,6 +238,9 @@ def update_cust():
 
 @app.route("/delete_cust", methods=["POST"])
 def delete_cust():
+    if not (session.get('username') and session.get("role") == 'manager'):
+        return redirect(url_for('login'))
+
     cust_id = request.form.get("cust_id")
     customer = Customer.query.filter_by(cust_id=cust_id).first()
     db.session.delete(customer)
@@ -238,6 +252,9 @@ def isValidPhoneNumber(phone_number:str):
 
 @app.route('/add_customer', methods=['GET', 'POST'])
 def add_customer():
+    if not (session.get('username') and session.get("role") == 'manager'):
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
         cust_name = request.form.get('cust_name')
         cust_address = request.form.get('cust_add')

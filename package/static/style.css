@@ -120,10 +120,11 @@ input[type="date"],
 input[type="number"],
 textarea {
   margin-top: 0.25rem;
-  border-radius: 0.25rem;
+  border-radius: 0.35rem;
   padding: 0.75rem;
   width: 21rem;
-  outline-color: var(--grey-800);
+  border: 2px solid var(--grey-500);
+  outline-color: var(--);
 }
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -150,6 +151,21 @@ textarea:focus {
 }
 .alert-success {
   background-color: var(--success);
+}
+#voidPaymentForm > div.flex-container {
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+.search-bar {
+  width: 100%;
+}
+#search-bar > .form-input {
+  justify-content: space-between;
+  align-items: center;
+}
+#search {
+  width: 90%;
 }
 @media only screen and (max-width: 768px) {
   header {
@@ -281,7 +297,7 @@ li {
   background-color: white;
   border-radius: 0.5rem;
   margin: 0.5rem 0;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
 }
 
 input[type="checkbox"] {
