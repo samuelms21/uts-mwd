@@ -29,14 +29,14 @@
           required
         />
       </div>
-      <br />
+      <!-- <br /> -->
       {% with messages = get_flashed_messages(with_categories=True) %} {% if
       messages %} {% for category, message in messages %}
       <div class="alert alert-{{ category }} fw-500 text-center">
         {{ message }}
       </div>
       {% endfor %} {% endif %} {% endwith %}
-      <br />
+      <!-- <br /> -->
       <input type="submit" value="Log In" class="btn" />
     </form>
   </div>
