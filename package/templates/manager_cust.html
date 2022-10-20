@@ -1,65 +1,65 @@
 {% extends "base.html" %} {% block content %}
-<h1>{{ session.role.capitalize() }} Admin Page</h1>
-<h2>Welcome, {{ session.username }}</h2>
-<br />
-
-<ul>
-  {% for cust in all_cust_o %}
-  <form action="/update_cust" method="post">
-    <li>
-      <p>{{ cust.cust_id }}</p>
+<div class="flex-container form-div-container-customer">
+  <div class="form-container-customer">
+    <h1 class="fw-700 center-text">Add Customer</h1>
+    <br />
+    <form action="/add_customer" method="POST" autocomplete="off">
+      <div class="form-input">
+        <label for="username">Name:</label>
+        <br />
+        <input type="text" name="cust_name" id="cust_name" placeholder="Enter Customer Name" required />
+      </div>
+      <div class="form-input">
+        <label for="address">Address:</label>
+        <br />
+        <input type="text" name="cust_add" id="cust_add" placeholder="Enter Customer Address" require />
+      </div>
+      <div class="form-input">
+        <label for="address">Phone:</label>
+        <br />
+        <input type="text" name="phone_add" id="phone_add" placeholder="Enter Customer Phone Number" require />
+        <br /><br />
+        {% with messages = get_flashed_messages(with_categories=True) %} {% if messages %} {% for category, message in messages %}
+        <div class="alert alert-{{ category }} fw-500 text-center">{{ message }}</div>
+        {% endfor %} {% endif %} {% endwith %}
+      </div>
+      <input type="submit" value="Add Cust" class="btn" />
+    </form>
+  </div>
+</div>
+<div class="flex-container form-div-container-customer">
+  {% if all_cust_o|length > 0 %}
+  <div class="form-container-customer">
+    <h1 class="fw-700 center-text">Delete / Edit Customer</h1>
+    <br />
+    {% for cust in all_cust_o %}
+    <form action="/update_cust" method="post">
       <input type="hidden" value="{{cust.cust_id}}" name="cust_id" />
-
-      <p>{{ cust.name }}</p>
+      <label for="cust_name">Name:</label>
+      <br />
       <input type="text" value="{{cust.name}}" name="newname" />
-
-      <p>{{ cust.address }}</p>
+      <br /><br />
+      <label for="cust_add">Address:</label>
+      <br />
       <input type="text" value="{{cust.address}}" name="newaddress" />
-
-      <p>{{ cust.phone }}</p>
+      <br /><br />
+      <label for="cust_add">Phone:</label>
+      <br />
       <input type="text" value="{{cust.phone}}" name="newphone" />
+      <br />
+      <br />
+      <p class="fw-500 text-grey-800">Amount = {{cust.amount}}</p>
+      {% with messages = get_flashed_messages(with_categories=True) %} {% if messages %} {% for category, message in messages %} {% if category[6:]|string == cust.cust_id|string %}
 
-      <p>{{ cust.amount }}</p>
-      <input type="submit" value="Edit" />
-    </li>
-  </form>
-
-  <form action="/delete_cust" method="post">
-    <input type="hidden" value="{{cust.cust_id}}" name="cust_id" />
-    <input type="submit" value="Delete" />
-  </form>
-  <br />
-  {% endfor %}
-</ul>
-
-<form action="/add_customer" method="POST" autocomplete="off">
-  <div class="form-input">
-    <label for="username">Name:</label>
-    <br />
-    <input
-      type="text"
-      name="cust_name"
-      id="cust_name"
-      placeholder="Enter Customer Name"
-      required
-    />
-  </div>
-  <div class="form-input">
-    <label for="address">Address:</label>
-    <br />
-    <input type="text" name="cust_add" id="cust_add" placeholder="Enter Customer Address" require />
-  </div>
-  <div class="form-input">
-    <label for="address">Phone:</label>
-    <br />
-    <input type="text" name="phone_add" id="phone_add" placeholder="Enter Customer Phone Number" require />
+      <div class="alert alert-{{ category[:5] }} fw-500 text-center">{{ message }}</div>
+      {% endif %} {% endfor %} {% endif %} {% endwith %}
+      <div class="flex-button">
+        <button type="submit" name="submit-btn" value="update" class="btn">Edit</button>
+        <button type="submit" name="submit-btn" value="delete" class="btn">Delete</button>
+      </div>
+    </form>
     <br /><br />
-    {% for category, message in get_flashed_messages(with_categories=True) %}
-    <p class="alert-red">{{message}}</p>
-    {% endfor %}
+    {% endfor %} {% endif %}
   </div>
-  <br />
-  <input type="submit" value="Add Cust" class="btn" />
-</form>
-
+</div>
 {% endblock %}

@@ -2,6 +2,7 @@ from package import app, db
 from flask import render_template, redirect, request, url_for, session, flash
 from package.models import User, Invoice, Customer
 import string
+from sqlalchemy import select, update, delete, values
 
 @app.route('/')
 def index():
@@ -84,7 +85,6 @@ def add_invoice():
             flash('Customer not found.', 'error')
             return redirect(url_for('sales'))
         
-        return redirect(url_for('sales'))
         
 def change_date_format(date:str):
     months_in_year = ['','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -219,32 +219,32 @@ def update_cust():
         return redirect(url_for('login'))
 
     cust_id = request.form.get("cust_id")
+    if request.form.get("submit-btn") == 'update':
+        newname = request.form.get("newname")
 
-    newname = request.form.get("newname")
+        newaddress = request.form.get("newaddress")
 
-    newaddress = request.form.get("newaddress")
+        newphone = request.form.get("newphone")
+        if isValidPhoneNumber(newphone):
+            customer = Customer.query.filter_by(cust_id=cust_id).first()
+            customer.name = newname
+            customer.address = newaddress
+            customer.phone = newphone
+            db.session.commit()
+        else:
+            flash("Gagal, invalid Phone Number!",f"error-{cust_id}")
+            return redirect(url_for('manager_cust'))
+        
+        return redirect(url_for('manager_cust'))
+    
+    elif request.form.get("submit-btn") == 'delete':
+        customer = Customer.query.filter_by(cust_id=cust_id).first()
+        delete_invoice = Invoice.query.filter_by(cust_id=str(cust_id)).all() 
+        for invoice in delete_invoice:
+            db.session.delete(invoice)
+        db.session.delete(customer)
+        db.session.commit()
 
-    newphone = request.form.get("newphone")
-
-    customer = Customer.query.filter_by(cust_id=cust_id).first()
-    customer.name = newname
-    customer.address = newaddress
-    customer.phone = newphone
-    db.session.commit()
-
-
-    return redirect(url_for('manager_cust'))
-
-
-@app.route("/delete_cust", methods=["POST"])
-def delete_cust():
-    if not (session.get('username') and session.get("role") == 'manager'):
-        return redirect(url_for('login'))
-
-    cust_id = request.form.get("cust_id")
-    customer = Customer.query.filter_by(cust_id=cust_id).first()
-    db.session.delete(customer)
-    db.session.commit()
     return redirect(url_for('manager_cust'))
 
 def isValidPhoneNumber(phone_number:str):
@@ -264,7 +264,7 @@ def add_customer():
             db.session.add(cust)
             db.session.commit()
         else:
-            flash("Gagal, invalid Phone Number!")
+            flash("Gagal, invalid Phone Number!","error")
             return redirect(url_for('manager_cust'))
         
     return redirect(url_for('manager_cust'))

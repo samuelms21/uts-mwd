@@ -90,6 +90,9 @@ form {
 .bg-grey-100 {
   background-color: var(--grey-100);
 }
+main {
+  min-height: 100vh;
+}
 .btn {
   margin: 0.5rem 0;
   background-color: var(--grey-900);
@@ -104,6 +107,11 @@ form {
 .btn:active {
   background-color: var(--grey-900-dark);
 }
+
+.center-text{
+  text-align: center;
+}
+
 header {
   justify-content: space-between;
   align-items: center;
@@ -124,7 +132,7 @@ textarea {
   padding: 0.75rem;
   width: 21rem;
   border: 2px solid var(--grey-500);
-  outline-color: var(--);
+  outline-color: var(--grey-700);
 }
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -242,6 +250,12 @@ li {
   background-color: white;
   border-radius: 0.5rem;
 }
+.form-container-customer {
+  margin: 1rem 0;
+  padding: 5rem 3rem;
+  background-color: white;
+  border-radius: 0.5rem;
+}
 .invoice-item {
   align-items: center;
   justify-content: space-between;
@@ -278,6 +292,15 @@ li {
   justify-content: center;
   align-items: center;
 }
+
+.form-div-container-customer {
+  background-color: var(--grey-100);
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .sales-container {
   background-color: #808080;
   padding: 1rem;
@@ -333,4 +356,14 @@ input[type="checkbox"]:checked {
 
 input[type="checkbox"]:checked:after {
   display: block;
+}
+
+.flex-button{
+  margin: auto;
+  width: 21rem;
+  display: flex;
+  justify-content: space-between;
+}
+.flex-button > button {
+  width: 48%;
 }
