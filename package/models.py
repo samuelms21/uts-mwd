@@ -7,14 +7,15 @@ class Customer(db.Model):
     name = db.Column(db.String(100))
     address = db.Column(db.Text)
     phone = db.Column(db.String(100))
+    status = db.Column(db.Boolean)
     
     invoices = db.relationship('Invoice',backref='invoice')
     
-    def __init__ (self,name,address,phone):
+    def __init__ (self,name,address,phone,status):
         self.name = name
         self.address = address
         self.phone = phone
-
+        self.status = status
 
 class Invoice(db.Model):
     __tablename__ = 'invoice'

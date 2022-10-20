@@ -4,14 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" />
     <title>{{ title }} - AR Tracking App</title>
   </head>
   <body>
@@ -19,9 +13,7 @@
       <div class="flex-container" id="brand-container">
         <h2 id="brand" class="fw-700">AR Tracking App</h2>
         <a class="nav-link" id="mobileMenu">
-          <img
-            src="{{ url_for('static', filename='images/mobile-menu.png')}}"
-          />
+          <img src="{{ url_for('static', filename='images/mobile-menu.png')}}" />
         </a>
       </div>
       <nav class="flex-container">
@@ -31,13 +23,11 @@
         <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
         {% endif %} {% if session.role == 'manager' %}
         <a href="{{ url_for('manager') }}" class="nav-link">Manage Invoices</a>
-        <a href="{{ url_for('manager_cust') }}" class="nav-link"
-          >Manage Customer Data</a
-        >
+        <a href="{{ url_for('manager_cust') }}" class="nav-link">Manage Customer Data</a>
         {% endif %}
       </nav>
     </header>
-    <main>
+    <main class="bg-grey-100">
       {% if message %}
       <div class="alert">{{ message }}</div>
       {% endif %} {% block content %}{% endblock %}

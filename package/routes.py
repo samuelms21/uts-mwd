@@ -70,21 +70,28 @@ def add_invoice():
         date = request.form.get('date')
         amount = request.form.get('amount')
         remark = request.form.get('remark')
+        all_active_customer = Customer.query.filter_by(status=1).all()
+        active_customer_ids = []
+        for cust in all_active_customer:
+            active_customer_ids.append(cust.cust_id)
 
         # Check if cust_id exists
         if Customer.query.filter_by(cust_id=cust_id).first():
             # User exists, proceed to add invoice to database
-            new_invoice = Invoice(cust_id, date, amount, remark, status=False)
-            db.session.add(new_invoice)
-            db.session.commit()
-            flash('Invoice succesfully added!', 'success')
-            return redirect(url_for('sales'))
+            if int(cust_id) not in active_customer_ids:
+                flash('Customer is Inactive', 'error')
+                return redirect(url_for('sales'))
+            elif int(cust_id) in active_customer_ids:
+                new_invoice = Invoice(cust_id, date, amount, remark, status=False)
+                db.session.add(new_invoice)
+                db.session.commit()
+                flash('Invoice succesfully added!', 'success')
+                return redirect(url_for('sales'))
         else:
             # cust_id does not exist in db
             flash('Customer not found.', 'error')
             return redirect(url_for('sales'))
         
-        return redirect(url_for('sales'))
         
 def change_date_format(date:str):
     months_in_year = ['','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -105,12 +112,17 @@ def finance():
 
     if not (session.get('username') and session.get("role") == 'finance'):
         return redirect(url_for('login'))
+    
+    all_active_customer = Customer.query.filter_by(status=1).all()
+    active_customer_ids = []
+    for cust in all_active_customer:
+        active_customer_ids.append(cust.cust_id)
+    
     all_invoice = Invoice.query.all()
-
     invoices = []    
 
     for inv in all_invoice:
-        if inv.status == False:
+        if inv.status == False and inv.cust_id in active_customer_ids:
             invoices.append(inv)
         inv.date = str(inv.date)
         inv.date = inv.date[:inv.date.index(' ')]
@@ -121,7 +133,6 @@ def finance():
 def approve_payment():
     if request.method == 'POST':
         data = request.form
-
         inv_ids = [int(i) for i in data.keys()]
 
         for inv_id in inv_ids:
@@ -191,17 +202,18 @@ def manager_cust():
     all_cust = Customer.query.all()
 
     class Cust():
-        def __init__ (self,cust_id,name,address,phone,amount=0):
+        def __init__ (self,cust_id,name,address,phone,status,amount=0):
             self.cust_id = cust_id
             self.name = name
             self.address = address
             self.phone = phone
             self.amount = amount
+            self.status = status
 
     all_cust_o = []
 
     for cust in all_cust:
-        each_cust = Cust(cust.cust_id,cust.name,cust.address,cust.phone)
+        each_cust = Cust(cust.cust_id,cust.name,cust.address,cust.phone,cust.status)
         all_cust_o.append(each_cust)
 
     for inv in all_invoice:
@@ -219,32 +231,39 @@ def update_cust():
         return redirect(url_for('login'))
 
     cust_id = request.form.get("cust_id")
+    if request.form.get("submit-btn") == 'update':
+        newname = request.form.get("newname")
 
-    newname = request.form.get("newname")
+        newaddress = request.form.get("newaddress")
 
-    newaddress = request.form.get("newaddress")
+        newphone = request.form.get("newphone")
+        check_status = request.form.get("newstatus")
+        if check_status == 'Active':
+            check_status = True
+        elif check_status == 'Inactive':
+            check_status = False
+            
+        if isValidPhoneNumber(newphone):
+            customer = Customer.query.filter_by(cust_id=cust_id).first()
+            customer.name = newname
+            customer.address = newaddress
+            customer.phone = newphone
+            customer.status = check_status
+            db.session.commit()
+        else:
+            flash("Gagal, invalid Phone Number!",f"error-{cust_id}")
+            return redirect(url_for('manager_cust'))
+        
+        return redirect(url_for('manager_cust'))
+    
+    elif request.form.get("submit-btn") == 'delete':
+        customer = Customer.query.filter_by(cust_id=cust_id).first()
+        delete_invoice = Invoice.query.filter_by(cust_id=str(cust_id)).all() 
+        for invoice in delete_invoice:
+            db.session.delete(invoice)
+        db.session.delete(customer)
+        db.session.commit()
 
-    newphone = request.form.get("newphone")
-
-    customer = Customer.query.filter_by(cust_id=cust_id).first()
-    customer.name = newname
-    customer.address = newaddress
-    customer.phone = newphone
-    db.session.commit()
-
-
-    return redirect(url_for('manager_cust'))
-
-
-@app.route("/delete_cust", methods=["POST"])
-def delete_cust():
-    if not (session.get('username') and session.get("role") == 'manager'):
-        return redirect(url_for('login'))
-
-    cust_id = request.form.get("cust_id")
-    customer = Customer.query.filter_by(cust_id=cust_id).first()
-    db.session.delete(customer)
-    db.session.commit()
     return redirect(url_for('manager_cust'))
 
 def isValidPhoneNumber(phone_number:str):
@@ -260,11 +279,11 @@ def add_customer():
         cust_address = request.form.get('cust_add')
         cust_phone = request.form.get('phone_add')
         if isValidPhoneNumber(cust_phone):
-            cust = Customer(cust_name,cust_address,cust_phone)
+            cust = Customer(cust_name,cust_address,cust_phone,True)
             db.session.add(cust)
             db.session.commit()
         else:
-            flash("Gagal, invalid Phone Number!")
+            flash("Gagal, invalid Phone Number!","error")
             return redirect(url_for('manager_cust'))
         
     return redirect(url_for('manager_cust'))
