@@ -2,7 +2,6 @@ from package import app, db
 from flask import render_template, redirect, request, url_for, session, flash
 from package.models import User, Invoice, Customer
 import string
-from sqlalchemy import select, update, delete, values
 
 @app.route('/')
 def index():
@@ -71,15 +70,23 @@ def add_invoice():
         date = request.form.get('date')
         amount = request.form.get('amount')
         remark = request.form.get('remark')
+        all_active_customer = Customer.query.filter_by(status=1).all()
+        active_customer_ids = []
+        for cust in all_active_customer:
+            active_customer_ids.append(cust.cust_id)
 
         # Check if cust_id exists
         if Customer.query.filter_by(cust_id=cust_id).first():
             # User exists, proceed to add invoice to database
-            new_invoice = Invoice(cust_id, date, amount, remark, status=False)
-            db.session.add(new_invoice)
-            db.session.commit()
-            flash('Invoice succesfully added!', 'success')
-            return redirect(url_for('sales'))
+            if int(cust_id) not in active_customer_ids:
+                flash('Customer is Inactive', 'error')
+                return redirect(url_for('sales'))
+            elif int(cust_id) in active_customer_ids:
+                new_invoice = Invoice(cust_id, date, amount, remark, status=False)
+                db.session.add(new_invoice)
+                db.session.commit()
+                flash('Invoice succesfully added!', 'success')
+                return redirect(url_for('sales'))
         else:
             # cust_id does not exist in db
             flash('Customer not found.', 'error')
@@ -105,12 +112,17 @@ def finance():
 
     if not (session.get('username') and session.get("role") == 'finance'):
         return redirect(url_for('login'))
+    
+    all_active_customer = Customer.query.filter_by(status=1).all()
+    active_customer_ids = []
+    for cust in all_active_customer:
+        active_customer_ids.append(cust.cust_id)
+    
     all_invoice = Invoice.query.all()
-
     invoices = []    
 
     for inv in all_invoice:
-        if inv.status == False:
+        if inv.status == False and inv.cust_id in active_customer_ids:
             invoices.append(inv)
         inv.date = str(inv.date)
         inv.date = inv.date[:inv.date.index(' ')]
@@ -121,9 +133,6 @@ def finance():
 def approve_payment():
     if request.method == 'POST':
         data = request.form
-        print(data)
-        for i in data.keys():
-            print(i,'ini i ####')
         inv_ids = [int(i) for i in data.keys()]
 
         for inv_id in inv_ids:
@@ -231,7 +240,7 @@ def update_cust():
         check_status = request.form.get("newstatus")
         if check_status == 'Active':
             check_status = True
-        elif check_status == 'Unactive':
+        elif check_status == 'Inactive':
             check_status = False
             
         if isValidPhoneNumber(newphone):
