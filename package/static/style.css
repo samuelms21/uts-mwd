@@ -39,6 +39,7 @@ html {
   font-family: "Inter", sans-serif;
 }
 .nav-link {
+  display: block;
   background-color: black;
   color: white;
   font-weight: 500;
@@ -107,38 +108,40 @@ main {
 .btn:active {
   background-color: var(--grey-900-dark);
 }
-
-.center-text{
+.center-text {
   text-align: center;
 }
-
 header {
-  justify-content: space-between;
-  align-items: center;
   padding: 1rem 1.5rem;
   background-color: black;
   color: white;
 }
 nav {
+  justify-content: space-between;
+  align-items: center;
   display: block;
 }
 input[type="text"],
 input[type="password"],
 input[type="date"],
-input[type="number"]
-textarea {
+input[type="number"],
+textarea,
+select,
+select > * {
   margin-top: 0.25rem;
   border-radius: 0.35rem;
-  padding: 0.75rem;
-  width: 21rem;
+  padding: 0.5rem 0.75rem;
+  width: 100%;
   border: 2px solid var(--grey-500);
   outline-color: var(--grey-700);
+  cursor: pointer;
 }
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="date"]:focus,
 input[type="number"]:focus,
-textarea:focus {
+textarea:focus,
+select {
   background-color: var(--grey-200);
 }
 #brand {
@@ -160,6 +163,15 @@ textarea:focus {
 .alert-success {
   background-color: var(--success);
 }
+.text-error {
+  color: var(--error);
+}
+.text-success {
+  color: var(--success);
+}
+.hide {
+  display: none;
+}
 #voidPaymentForm > div.flex-container {
   justify-content: space-between;
   align-items: center;
@@ -175,19 +187,18 @@ textarea:focus {
 #search {
   width: 90%;
 }
+.nav__link {
+  justify-content: space-around;
+}
 @media only screen and (max-width: 768px) {
   header {
-    padding: 1rem;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    padding: 0.75rem 1rem;
   }
   #mobileMenu {
     display: block;
   }
-  #brand-container {
-    align-items: center;
-    justify-content: space-between;
+  .nav__link {
+    display: none;
   }
 }
 li {
@@ -246,7 +257,7 @@ li {
 }
 .form-container {
   margin: 2rem 0;
-  padding: 5rem 3rem;
+  padding: 3rem 2rem;
   background-color: white;
   border-radius: 0.5rem;
 }
@@ -294,6 +305,7 @@ li {
 }
 
 .form-div-container-customer {
+  overflow-x: hidden;
   background-color: var(--grey-100);
   height: auto;
   display: flex;
@@ -358,7 +370,7 @@ input[type="checkbox"]:checked:after {
   display: block;
 }
 
-.flex-button{
+.flex-button {
   margin: auto;
   width: 21rem;
   display: flex;
@@ -367,5 +379,3 @@ input[type="checkbox"]:checked:after {
 .flex-button > button {
   width: 48%;
 }
-
-

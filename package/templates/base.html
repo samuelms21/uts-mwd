@@ -4,28 +4,64 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+    />
     <title>{{ title }} - AR Tracking App</title>
   </head>
   <body>
-    <header class="flex-container">
-      <div class="flex-container" id="brand-container">
-        <h2 id="brand" class="fw-700">AR Tracking App</h2>
-        <a class="nav-link" id="mobileMenu">
-          <img src="{{ url_for('static', filename='images/mobile-menu.png')}}" />
-        </a>
-      </div>
+    <header>
       <nav class="flex-container">
-        {% if not session.username %}
-        <a href="{{ url_for('login') }}" class="nav-link">Login</a>
-        {% else %}
-        <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
-        {% endif %} {% if session.role == 'manager' %}
-        <a href="{{ url_for('manager') }}" class="nav-link">Manage Invoices</a>
-        <a href="{{ url_for('manager_cust') }}" class="nav-link">Manage Customer Data</a>
-        {% endif %}
+        <h2 id="brand" class="fw-700">AR Tracking App</h2>
+
+        <a class="nav-link" id="mobileMenu">
+          <img
+            src="{{ url_for('static', filename='images/mobile-menu.png')}}"
+          />
+        </a>
+
+        <div class="flex-container nav__link">
+          {% if not session.username %}
+          <a href="{{ url_for('login') }}" class="nav-link">Login</a>
+          {% else %}
+          <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+          {% endif %} {% if session.role == 'manager' %}
+          <a href="{{ url_for('manager') }}" class="nav-link"
+            >Manage Invoices</a
+          >
+          <a href="{{ url_for('manager_cust') }}" class="nav-link"
+            >Manage Customer Data</a
+          >
+          {% endif %}
+        </div>
       </nav>
+      <div class="mobile-menu-links hide">
+        <ul>
+          {% if not session.username %}
+          <li><a href="{{ url_for('login') }}" class="nav-link">Login</a></li>
+          {% else %}
+          <li>
+            <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+          </li>
+          {% endif %} {% if session.role == 'manager' %}
+          <li>
+            <a href="{{ url_for('manager') }}" class="nav-link"
+              >Manage Invoices</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('manager_cust') }}" class="nav-link"
+              >Manage Customer Data</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </div>
     </header>
     <main class="bg-grey-100">
       {% if message %}
