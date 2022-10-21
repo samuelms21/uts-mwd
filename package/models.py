@@ -1,21 +1,21 @@
 from package import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 class Customer(db.Model):
     __tablename__ = 'customer'
     cust_id = db.Column('cust_id',db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     address = db.Column(db.Text)
     phone = db.Column(db.String(100))
+    status = db.Column(db.Boolean)
     
     invoices = db.relationship('Invoice',backref='invoice')
     
-    def __init__ (self,name,address,phone):
+    def __init__ (self,name,address,phone,status):
         self.name = name
         self.address = address
         self.phone = phone
-
+        self.status = status
 
 class Invoice(db.Model):
     __tablename__ = 'invoice'
@@ -40,7 +40,7 @@ class User(db.Model):
     username = db.Column(db.String(100))
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(20))
-    
+
     def __init__ (self,username,password,role):
         self.username = username
         self.password_hash = self.set_password(password)
